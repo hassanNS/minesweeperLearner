@@ -1,0 +1,17 @@
+Due Friday 11/6 8:00PM
+
+Read (1% effort)
+	1- Read and understand only MapGrid.java (and GridGenerationTest.java)
+	2- INGORE and disregard MineSweeper.java (and MineSweeperTest.java)
+
+Create (70% effort)
+	3- Create double hash table with pattern hash funtionality. 
+	4- Create pattern class (extra: with token matchablity).  
+
+Generate (20% effor) 
+5- Be able to tokenize patterns from genrated MapGrid.
+6- Be able to hash tokens into hashtable by adding patterns or increase their score. 
+
+Produce (9% effort)
+7- Disply hashtable NEATLY!
+
