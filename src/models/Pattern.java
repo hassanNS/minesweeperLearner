@@ -13,13 +13,13 @@ public class Pattern {
 	public int index = tileSum;
 	private Pattern next;
 	
-	public Pattern(String pattern)
+	public Pattern(String pattern) 
 	{
 		this.pattern = pattern;
 		calculateSum();
 	}
 	
-	public int match (Pattern pat)
+	public int match (Pattern pat) //TODO rename to marchToekn, and create boolean matchPattern(Pattern)
 	{
 		char[] thisPatArray = getPatternArray();
 		char [] patArray = pat.getPatternArray();
@@ -86,7 +86,7 @@ public class Pattern {
 	
 	public void addNext(Pattern p)
 	{
-		this.next = p;
+		this.next = p; //TODO this is not how you add to linkedlist
 	}
 	
 	public Pattern next()
@@ -99,7 +99,7 @@ public class Pattern {
 	public String toString()
 	{
 	
-		return ""; 
+		return ""; //TODO
 	}
 	
 	// Calculate the sum of all of the numbers on
@@ -109,7 +109,7 @@ public class Pattern {
 		char [] nums = getPatternArray();
 		for (int i=0; i < nums.length; i++)
 		{
-			tileSum += Character.getNumericValue(nums[i]);
+			tileSum += Character.getNumericValue(nums[i]); //TODO This does not skip mines and blanks! 
 			if (nums[i] < 0)
 			{
 				numOfMines++;
