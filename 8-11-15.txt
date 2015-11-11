@@ -1,0 +1,27 @@
+Due whenever
+
+Notes:
+1- [DONE] Create a new PatternMathTest for testing match function (leave TestGrid alone).
+2- [TODO] Rename "int Pattern.match(Pattern)" to "boolean isMatch(Pattern)" to return true if two pattern are parallel.
+3- [TODO] Have pattern printable (with toString)
+
+Overall, I think you're getting the idea of how the process of collecting patterns is. Right now, try to forget about Tokens.
+The current Pattern.match() function suits Patterns vs Token not Pattern vs Pattern, so it might come in handly later.
+
+Next, after we have our patterns knowing parallel patterns, we next move to hashtable.
+First note: never ever ever use numbers, that's very haram. (pass them though constructor PatternHash~linenumber#23).
+
+Second: PatternHash should have a "AddPattern(Pattern)" that will only add unique patterns while
+    inc/dec existing ones (using isMatch, +/- based on token value being mine or non-mine).
+
+        Third: make a new main and a new class that feeds in patterns to PatternHash. Let's call this class PatternFeeder.
+        That class should accept a GridMap, and should have a function called feed(PatternHash, int) thats gets a list to be fed and a number of map regeneration.
+            Each generation will tokenize all tiles to patterns with values (0,1,2,3,4,5,6,7,8,M,B) //don't forget Blank)
+
+
+                Other notes: (added TODO with apropriate comment)
+                Class       Line
+                Pattern     22
+                            89
+                                        102
+                                                    112
