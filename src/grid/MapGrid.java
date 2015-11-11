@@ -86,12 +86,20 @@ public class MapGrid
 	 */
 	public String tileString(int x, int y)
 	{
-		if(grid[y][x] == 0)
+		if(grid[x][y] == 0)
 			return "0"; 
-		else if(grid[y][x] > 0)
-			return grid[y][x]+""; 
+		else if(grid[x][y] > 0)
+			return grid[x][y]+""; 
 		else
 			return "*";
+	}
+	
+	// Take a tile on the grid and return
+	// a 3 x 3 snapshot of tiles surrounding it.
+	public String tokenize(int x, int y)
+	{
+		
+		return "";
 	}
 	
 	/**
@@ -105,7 +113,7 @@ public class MapGrid
 		{
 			for(int j=0; j<width; j++)
 			{
-				build += " " + tileString(j,i) + " ";
+				build += " " + tileString(i, j) + " ";
 					
 			}//end j
 			build += "\n"; 

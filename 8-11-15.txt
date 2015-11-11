@@ -3,7 +3,7 @@ Due whenever
 Notes:
 1- [DONE] Create a new PatternMathTest for testing match function (leave TestGrid alone).
 2- [TODO] Rename "int Pattern.match(Pattern)" to "boolean isMatch(Pattern)" to return true if two pattern are parallel.
-3- [TODO] Have pattern printable (with toString)
+3- [DONE] Have pattern printable (with toString)
 
 Overall, I think you're getting the idea of how the process of collecting patterns is. Right now, try to forget about Tokens.
 The current Pattern.match() function suits Patterns vs Token not Pattern vs Pattern, so it might come in handly later.

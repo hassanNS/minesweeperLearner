@@ -19,10 +19,19 @@ public class Pattern {
 		calculateSum();
 	}
 	
-	public int match (Pattern pat) //TODO rename to marchToekn, and create boolean matchPattern(Pattern)
+
+	// This function returns a score based on how
+	// well two patterns are similar.
+	public int match (Pattern pat)
 	{
 		char[] thisPatArray = getPatternArray();
 		char [] patArray = pat.getPatternArray();
+		
+		if (thisPatArray.length != patArray.length)
+		{
+			System.out.println("Patterns not same length!");
+			return -0;
+		}
 		
 		// We will run 4 checks forward
 		// Then 4 checks backwards
@@ -59,14 +68,7 @@ public class Pattern {
 		}
 		
 		// Get the max of both comparisons
-		int max = Arrays.stream(matchWeights).max().getAsInt();
-		
-		for (Integer a : matchWeights)
-		{
-			System.out.println(a);
-		}
-		
-		return max;
+		return Arrays.stream(matchWeights).max().getAsInt();
 	}
 	
 	public char[] getPatternArray()
@@ -99,7 +101,9 @@ public class Pattern {
 	public String toString()
 	{
 	
-		return ""; //TODO
+		char [] k = getPatternArray();
+		return String.format("%c %c %c\n%c H %c\n%c %c %c\n", 
+						k[0],k[1],k[2],k[3],k[7],k[4],k[5],k[6]); 
 	}
 	
 	// Calculate the sum of all of the numbers on
