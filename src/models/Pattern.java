@@ -10,13 +10,23 @@ public class Pattern {
 	// The sum of the highest numbers available for this pattern
 	int tileSum;
 	
+	
+	int x, y;
 	public int index = tileSum;
-	private Pattern next;
+	public Pattern next;
 	
 	public Pattern(String pattern) 
 	{
 		this.pattern = pattern;
 		calculateSum();
+	}
+	
+	public Pattern(String p, int x, int y)
+	{
+		this.pattern = p;
+		calculateSum();
+		this.x = x;
+		this.y = y;
 	}
 	
 
@@ -26,6 +36,7 @@ public class Pattern {
 	{
 		char[] thisPatArray = getPatternArray();
 		char [] patArray = pat.getPatternArray();
+		int PATLENGTH = patArray.length;
 		
 		if (thisPatArray.length != patArray.length)
 		{
@@ -39,36 +50,79 @@ public class Pattern {
 		
 		for (int i=0; i < thisPatArray.length; i++)
 		{
-			for (int j=0; j < patArray.length; j++)
-			{
-				// These decisions checks from left to right, from each
-				// corner of the pattern. 0, 2, 4, and 6
-				if (thisPatArray[i] == patArray[j])
-					matchWeights[0]++;
-				if (thisPatArray[i] == patArray[(j + 2) % 8])
-					matchWeights[1]++;
-				if (thisPatArray[i] == patArray[(j + 4) % 8])
-					matchWeights[2]++;
-				if (thisPatArray[i] == patArray[(j + 6) % 8])
-					matchWeights[3]++;
-			}
+			// These decisions checks from left to right, from each
+			// corner of the pattern. 0, 2, 4, and 6
+			if (thisPatArray[i] == patArray[i])
+				matchWeights[0]++;
+			if (thisPatArray[i] == patArray[(i + 2) % PATLENGTH])
+				matchWeights[1]++;
+			if (thisPatArray[i] == patArray[(i + 4) % PATLENGTH])
+				matchWeights[2]++;
+			if (thisPatArray[i] == patArray[(i + 6) % PATLENGTH])
+				matchWeights[3]++;
 			
-			for (int j=patArray.length; j > 0; j--)
-			{
-				// These decisions does the same check above but backwards
-				if (thisPatArray[i] == patArray[(8-j)])
-					matchWeights[4]++;
-				if (thisPatArray[i] == patArray[Math.abs((j - 2) % 8)])
-					matchWeights[5]++;
-				if (thisPatArray[i] == patArray[Math.abs((j - 4) % 8)])
-					matchWeights[6]++;
-				if (thisPatArray[i] == patArray[Math.abs((j - 6) % 8)])
-					matchWeights[7]++;
-			}
+			int iBackwards = ((-1 * i) + PATLENGTH) % PATLENGTH;
+			// These decisions does the same check above but backwards
+			if (thisPatArray[iBackwards] == patArray[i])
+				matchWeights[4]++;
+			if (thisPatArray[iBackwards] == patArray[(i + 2) % PATLENGTH])
+				matchWeights[5]++;
+			if (thisPatArray[iBackwards] == patArray[(i + 4) % PATLENGTH])
+				matchWeights[6]++;
+			if (thisPatArray[iBackwards] == patArray[(i + 6) % PATLENGTH])
+				matchWeights[7]++;
 		}
 		
 		// Get the max of both comparisons
 		return Arrays.stream(matchWeights).max().getAsInt();
+	}
+
+	public boolean isMatch(Pattern p)
+	{
+		char[] thisPatArray = getPatternArray();
+		char [] patArray = p.getPatternArray();
+	
+		int PATLENGTH = patArray.length;
+
+		if (thisPatArray.length != patArray.length)
+		{
+			System.out.println("Patterns do not match!");
+			return false;
+		}
+		
+		// We will run 4 checks forward
+		// Then 4 checks backwards
+		int [] matchWeights = {0, 0, 0, 0, 0, 0, 0, 0};
+		
+		for (int i=0; i < thisPatArray.length; i++)
+		{
+			// These decisions checks from left to right, from each
+			// corner of the pattern. 0, 2, 4, and 6
+			if (thisPatArray[i] == patArray[i])
+				matchWeights[0]++;
+			if (thisPatArray[i] == patArray[(i + 2) % PATLENGTH])
+				matchWeights[1]++;
+			if (thisPatArray[i] == patArray[(i + 4) % PATLENGTH])
+				matchWeights[2]++;
+			if (thisPatArray[i] == patArray[(i + 6) % PATLENGTH])
+				matchWeights[3]++;
+			
+			int iBackwards = ((-1 * i) + PATLENGTH) % PATLENGTH;
+			// These decisions does the same check above but backwards
+			if (thisPatArray[iBackwards] == patArray[i])
+				matchWeights[4]++;
+			if (thisPatArray[iBackwards] == patArray[(i + 2) % PATLENGTH])
+				matchWeights[5]++;
+			if (thisPatArray[iBackwards] == patArray[(i + 4) % PATLENGTH])
+				matchWeights[6]++;
+			if (thisPatArray[iBackwards] == patArray[(i + 6) % PATLENGTH])
+				matchWeights[7]++;
+		}
+		
+		if (Arrays.stream(matchWeights).max().getAsInt() == PATLENGTH)
+			return true;
+		
+		return false;
 	}
 	
 	public char[] getPatternArray()
@@ -86,14 +140,16 @@ public class Pattern {
 		return this.numOfMines;
 	}
 	
-	public void addNext(Pattern p)
+	/**
+	 * 
+	 * @param p
+	 */
+	public void append(Pattern p)
 	{
-		this.next = p; //TODO this is not how you add to linkedlist
-	}
-	
-	public Pattern next()
-	{
-		return this.next;
+		if (this.next == null)
+			this.next = p;
+		else
+			this.next.append(p);
 	}
 	/**
 	 * Returns a string presentation of the pattern
@@ -102,10 +158,30 @@ public class Pattern {
 	{
 	
 		char [] k = getPatternArray();
-		return String.format("%c %c %c\n%c H %c\n%c %c %c\n", 
-						k[0],k[1],k[2],k[3],k[7],k[4],k[5],k[6]); 
+		return String.format("%c %c %c\n%c ? %c\n%c %c %c\nx,y(%d, %d)\nScore:%d\nMines:%d\n", 
+						k[0],k[1],k[2],k[7],k[3],k[6],k[5],k[4], 
+						this.x, this.y, this.tileSum, this.numOfMines); 
 	}
 	
+	/**
+	 * Print a pattern and any other patterns linked with it
+	 */
+	public void printLinkedList()
+	{
+		System.out.println(this.toString() + " |\n V");
+		if (this.next != null)
+			this.next.printLinkedList();
+		else
+			System.out.println("null");
+	}
+	
+	private int getCharValue(char c)
+	{
+		if (c == 'B' || c == '*')
+			return 0;
+	
+		return Character.getNumericValue(c);
+	}
 	// Calculate the sum of all of the numbers on
 	// the 3 x 3 pattern
 	private void calculateSum()
@@ -113,11 +189,13 @@ public class Pattern {
 		char [] nums = getPatternArray();
 		for (int i=0; i < nums.length; i++)
 		{
-			tileSum += Character.getNumericValue(nums[i]); //TODO This does not skip mines and blanks! 
-			if (nums[i] < 0)
+			// Found a mine
+			if (nums[i] == '*')
 			{
 				numOfMines++;
-			}
+			}	
+			
+			tileSum += getCharValue(nums[i]); //TODO This does not skip mines and blanks! 
 		}
 	}
 }

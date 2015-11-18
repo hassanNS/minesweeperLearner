@@ -1,6 +1,8 @@
 package grid;
 import java.util.Random;
 
+import models.Pattern;
+
 /**
  * Map grid produces a Width x Height integer grid with n Bomb randomly placed.
  *  Placing a bomb would replace tile at x,y with a bomb adding +1 to surrounding tiles.
@@ -79,28 +81,26 @@ public class MapGrid
 	}
 	
 	/**
-	 * Returns string charachter representation of tile at given x and y
+	 * Returns string character representation of tile at given x and y
 	 * @param x x position
 	 * @param y y position 
 	 * @return tile[y][x] as string char: "*"->bomb, " "->empty, "%n"->number
 	 */
 	public String tileString(int x, int y)
 	{
-		if(grid[x][y] == 0)
+		
+		// Exceeded border
+		if ((y < 0 || x < 0) || 
+				(y >= height || x >= width))
+			return "B";
+		else if(grid[y][x] == 0)
 			return "0"; 
-		else if(grid[x][y] > 0)
-			return grid[x][y]+""; 
+		else if(grid[y][x] > 0)
+			return grid[y][x]+""; 
 		else
 			return "*";
 	}
 	
-	// Take a tile on the grid and return
-	// a 3 x 3 snapshot of tiles surrounding it.
-	public String tokenize(int x, int y)
-	{
-		
-		return "";
-	}
 	
 	/**
 	 * Returns a string presentation of the grid 
@@ -113,7 +113,7 @@ public class MapGrid
 		{
 			for(int j=0; j<width; j++)
 			{
-				build += " " + tileString(i, j) + " ";
+				build += " " + tileString(j, i) + " ";
 					
 			}//end j
 			build += "\n"; 
