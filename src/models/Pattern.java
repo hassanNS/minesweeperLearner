@@ -1,14 +1,20 @@
 package models;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
-public class Pattern {
+public class Pattern implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	// Stores the pattern in an array format.
 	private String pattern;
 	int numOfMines;
 	// The sum of the highest numbers available for this pattern
 	int tileSum;
+	float score=0;
 	
 	
 	int x, y;
@@ -29,7 +35,22 @@ public class Pattern {
 		this.y = y;
 	}
 	
-
+	public void incrementScore(int x)
+	{
+		score+=x;
+	}
+	
+	public void decrementScore(int x)
+	{
+		score-=x;
+	}
+	
+	public float getScore()
+	{
+		return this.score;
+	}
+	
+	
 	// This function returns a score based on how
 	// well two patterns are similar.
 	public int match (Pattern pat)
@@ -130,6 +151,11 @@ public class Pattern {
 		return pattern.toCharArray();
 	}
 	
+	public String getPatternString()
+	{
+		return this.pattern;
+	}
+	
 	public int getSum()
 	{
 		return this.tileSum;
@@ -146,10 +172,13 @@ public class Pattern {
 	 */
 	public void append(Pattern p)
 	{
-		if (this.next == null)
-			this.next = p;
-		else
-			this.next.append(p);
+		if (!checkExists(p))
+		{
+			if (this.next == null)
+				this.next = p;
+			else
+				this.next.append(p);
+		}
 	}
 	/**
 	 * Returns a string presentation of the pattern
@@ -161,6 +190,25 @@ public class Pattern {
 		return String.format("%c %c %c\n%c ? %c\n%c %c %c\nx,y(%d, %d)\nScore:%d\nMines:%d\n", 
 						k[0],k[1],k[2],k[7],k[3],k[6],k[5],k[4], 
 						this.x, this.y, this.tileSum, this.numOfMines); 
+	}
+	
+	/**
+	 * 
+	 * @param a Pattern class or a token
+	 * @return returns false if the pattern does not exist in the linked list
+	 * and vice versa
+	 */
+	public boolean checkExists(Pattern p)
+	{
+		Pattern temp = this;
+		if (temp.next != null)
+		{
+			if (isMatch(temp))
+				return true;
+			temp = temp.next;
+		}
+		
+		return false;
 	}
 	
 	/**

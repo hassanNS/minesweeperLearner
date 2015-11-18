@@ -1,10 +1,13 @@
 package grid;
 
+import java.util.ArrayList;
+
 import models.Pattern;
 
 public class Tokenizer {
 	
 	MapGrid mg;
+	final String empty = "00000000";
 	
 	public Tokenizer(MapGrid m)
 	{
@@ -29,8 +32,10 @@ public class Tokenizer {
 		pat+=mg.tileString(x+1,y);
 		pat+=mg.tileString(x+1,y-1);
 		pat+=mg.tileString(x,y-1);
-				
-		System.out.println(pat + "(" + x + "," + y+")");
+		
+		if (pat.equals(empty))
+			return null;
+		//System.out.println(pat + "(" + x + "," + y+")");
 		return new Pattern(pat, x, y);				
 	}
 	
@@ -39,17 +44,19 @@ public class Tokenizer {
 	 * @return An array of patterns representing 3x3 snapshots of
 	 * every token in the grid.
 	 */
-	public Pattern[] tokenize3x3()
+	public ArrayList<Pattern> tokenize3x3()
 	{
-		Pattern[] patArray = new Pattern[mg.width*mg.height];
-		int patIndex = 0;
+		ArrayList<Pattern> patArray = new ArrayList<Pattern>();
 		
 		for(int i=0; i<mg.width; i++)
 		{
 			for(int j=0; j<mg.height; j++)
-			{
-				patArray[patIndex] = tokenizeTile3x3(i, j);
-				patIndex++;
+			{	
+				Pattern t = tokenizeTile3x3(i, j);
+				if (t == null)
+					continue;
+				
+				patArray.add(t);
 			}
 		}
 		

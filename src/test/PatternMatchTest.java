@@ -6,9 +6,9 @@ public class PatternMatchTest {
 
 	public static void main(String[] args) 
 	{
-		String pat = "01234567";
+		String pat = "********";
 		String[] patternTests = {
-				"01234567", 
+				"********", 
 				"67012345", 
 				"45670123", 
 				"23456701",

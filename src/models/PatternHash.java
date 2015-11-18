@@ -1,5 +1,7 @@
 package models;
 
+import java.io.PrintWriter;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -12,7 +14,11 @@ import java.util.HashMap;
  *
  */
 
-public class PatternHash {
+public class PatternHash implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * A hashtable of length 9. Each index being the number of mines.
 	 * Thus, 0-8 mines. 
@@ -52,6 +58,7 @@ public class PatternHash {
 		}
 		else
 		{
+			// Only the pattern if it does not already exist
 			patHashTable[p.getMines()][p.getSum()].append(p);
 		}
 	}
@@ -75,6 +82,39 @@ public class PatternHash {
 	public Pattern getPatternLinkedList(int mineNum, int tileSum)
 	{
 		return patHashTable[mineNum][tileSum];
+	}
+	
+	/**
+	 * Write every pattern inside the hashtable to a csv file
+	 */
+	public void writeToFile()
+	{
+		try{
+			PrintWriter writer = new PrintWriter("patternData.csv", "UTF-8");
+			for(int i=0; i<maxMine+1; i++)
+			{
+				for(int j=0; j<maxSum+1; j++)
+				{
+					if(getPatternLinkedList(i, j) == null)
+						continue;
+					
+					Pattern temp = getPatternLinkedList(i, j);
+					do{
+						writer.printf("%s,%d,%d,%f\n", 
+								temp.getPatternString(), temp.getMines(), 
+								temp.getSum(), temp.getScore());
+						temp = temp.next;
+					}
+					while(temp != null);
+				}
+			}
+			writer.close();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			System.out.println();
+		}
 	}
 }
 
