@@ -46,14 +46,12 @@ public class PatternHash {
 	 */
 	public void addPattern(Pattern p)
 	{
-		if (patHashTable[p.getMines()][p.getSum()] == null)
-		{
-			patHashTable[p.getMines()][p.getSum()] = p;
-		}
+		Pattern root = patHashTable[p.getMines()][p.getSum()]; 
+		if (root == null)
+			patHashTable[p.getMines()][p.getSum()] = p; 
 		else
-		{
-			patHashTable[p.getMines()][p.getSum()].append(p);
-		}
+			root.append(p);
+		
 	}
 	
 	/**

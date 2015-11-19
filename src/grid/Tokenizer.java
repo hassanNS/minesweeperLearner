@@ -2,8 +2,16 @@ package grid;
 
 import models.Pattern;
 
+/**
+ * Yokenizer  create patterns from a given grid 
+ * 
+ * Comment 
+ * This class also needs refine and optimization -KLD
+ *
+ */
 public class Tokenizer {
 	
+	//TODO remove dependency 
 	MapGrid mg;
 	
 	public Tokenizer(MapGrid m)
@@ -15,10 +23,11 @@ public class Tokenizer {
 	 * 3 x 3 snapshot of the board as a pattern
 	 * @param x the width x coordinate
 	 * @param y the height y coordinate
-	 * @return
+	 * @return a patterns of x,y in grid 
 	 */
-	public Pattern tokenizeTile3x3(int x, int y)
+	public Pattern tokenizeTile3x3(int x, int y) 
 	{
+		//TODO pass grid 
 		String pat="";
 		
 		pat+=mg.tileString(x-1,y-1);
@@ -30,11 +39,14 @@ public class Tokenizer {
 		pat+=mg.tileString(x+1,y-1);
 		pat+=mg.tileString(x,y-1);
 				
-		System.out.println(pat + "(" + x + "," + y+")");
-		return new Pattern(pat, x, y);				
+		
+		int type = (mg.tileString(x, y).charAt(0)=='*')? 0 : 1; 
+		
+		//System.out.println(pat + "(" + x + "," + y+")");
+		return new Pattern(pat, x, y, type);				
 	}
 	
-	/**
+	/** TODO delete: not used. 
 	 * 
 	 * @return An array of patterns representing 3x3 snapshots of
 	 * every token in the grid.

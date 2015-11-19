@@ -1,10 +1,8 @@
 package grid;
 import java.util.Random;
 
-import models.Pattern;
-
 /**
- * Map grid produces a Width x Height integer grid with n Bomb randomly placed.
+ * Map grid produces a Width x Height integer grid with n Bomb randomly placed across the grid.
  *  Placing a bomb would replace tile at x,y with a bomb adding +1 to surrounding tiles.
  * 
  * @author KLD
@@ -12,28 +10,28 @@ import models.Pattern;
  */
 public class MapGrid 
 {
-	final int BOMB = -10; 
+	final int BOMB_INIT = -10; 
 	
 	//0 empty 
-	int[][] grid; 
+	public int[][] grid; 
 	
 	int width; 
 	int height; 
 	
-	int maxMine; 
+	int mine; 
 	
 	public MapGrid(int w, int h, int m)
 	{
 		width = w; 
 		height = h; 
-		maxMine = m; 
+		mine = m; 
 		
 		regenerate(); 
 		
 	}//end constructor 
 	
 	/**
-	 * initliizeze grid and place random bombs
+	 * initlizeze grid and place random bombs
 	 */
 	public void regenerate()
 	{
@@ -50,7 +48,7 @@ public class MapGrid
 		Random r = new Random(); 
 		int rx, ry; 
 		
-		for(int i=0; i<maxMine; i++)
+		for(int i=0; i<mine; i++)
 		{
 			rx = r.nextInt(width);
 			ry = r.nextInt(height); 
@@ -61,8 +59,8 @@ public class MapGrid
 				ry = r.nextInt(height); 
 			}
 	
-				//place bomb 
-			grid[ry][rx] = BOMB; 
+			//place bomb in x,y and add +1 to surroundings (includes self) 
+			grid[ry][rx] = BOMB_INIT; 
 			
 			int ox = rx-1;
 			int oy = ry-1; 
@@ -84,7 +82,7 @@ public class MapGrid
 	 * Returns string character representation of tile at given x and y
 	 * @param x x position
 	 * @param y y position 
-	 * @return tile[y][x] as string char: "*"->bomb, " "->empty, "%n"->number
+	 * @return a character representation of grid value at point ("B" out of bounds, "*" mines, or tile integer value)
 	 */
 	public String tileString(int x, int y)
 	{
@@ -118,8 +116,6 @@ public class MapGrid
 			}//end j
 			build += "\n"; 
 		}//end i
-		
-		
 		
 		return build; 
 	}

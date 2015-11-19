@@ -1,15 +1,40 @@
 package models;
 
 import java.util.Arrays;
-
+ /**
+  * Pattern is a sequence of characters that surrounds a tile (excluding the tile). The pattern uses 
+  * it's string to uniquely identify matches 
+  * 
+  * 
+  * 
+  * TODO
+  *  needs more work (refine and optimize)  - KLD
+  *
+  */
 public class Pattern {
 	
 	// Stores the pattern in an array format.
 	private String pattern;
+	
+	/**
+	 * number of mines in pattern
+	 */
 	int numOfMines;
-	// The sum of the highest numbers available for this pattern
+	
+	/*
+	 * sum of only integers in pattern  
+	 */
 	int tileSum;
 	
+	/**
+	 * contains values of mine and empty occurrence 
+	 */
+	public int[] score; 
+	
+	/**
+	 * 0 for mine and 1 for empty 
+	 */
+	int type; 
 	
 	int x, y;
 	public int index = tileSum;
@@ -29,6 +54,17 @@ public class Pattern {
 		this.y = y;
 	}
 	
+	public Pattern(String p, int x, int y, int type)
+	{
+		this.pattern = p;
+		calculateSum();
+		this.x = x;
+		this.y = y;
+		
+		this.type = type; 
+		score = new int[2];
+		score[type]++; 
+	}
 
 	// This function returns a score based on how
 	// well two patterns are similar.
@@ -141,11 +177,20 @@ public class Pattern {
 	}
 	
 	/**
-	 * 
-	 * @param p
+	 * Appends the added pattern at the end of the linkedlist only if it's unique.
+	 * 	Otherwise, increment the parallel pattern by the type of the new pattern.  
+	 * @param p new pattern to add
 	 */
 	public void append(Pattern p)
 	{
+		//catch duplicates 
+		if(isMatch(p))
+		{
+			score[p.type]++; 
+			return; 
+		}
+			
+		//adds linkedlist-style
 		if (this.next == null)
 			this.next = p;
 		else
@@ -156,11 +201,14 @@ public class Pattern {
 	 */
 	public String toString()
 	{
-	
-		char [] k = getPatternArray();
-		return String.format("%c %c %c\n%c ? %c\n%c %c %c\nx,y(%d, %d)\nScore:%d\nMines:%d\n", 
+		String [] k = pattern.split("");
+		
+		return (k[0]+k[1]+k[2]+"\n"+k[7]+" "+k[3]+"\n"+k[6]+k[5]+k[4]); 
+		
+		/*
+		return String.format("%c %c %c\n%c   %c\n%c %c %c", 
 						k[0],k[1],k[2],k[7],k[3],k[6],k[5],k[4], 
-						this.x, this.y, this.tileSum, this.numOfMines); 
+						this.x, this.y, this.tileSum, this.numOfMines); */
 	}
 	
 	/**
