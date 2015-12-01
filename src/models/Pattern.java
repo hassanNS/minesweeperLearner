@@ -15,23 +15,32 @@ import java.util.Arrays;
 
 public class Pattern implements Serializable{
 
+
+	public static int TYPE_MINE = 0; 
+	public static int TYPE_NON_MINE= 1; 
+	
+	
+	
 	/**
 	 *
 	 */
 	private static final long serialVersionUID = 1L;
-	// Stores the pattern in an array format.
+	
+	/**
+	 *  Stores the pattern in an array format.
+	 */
 	private String pattern;
 
 	/**
 	 * number of mines in pattern
 	 */
-	int numOfMines;
+	public int mines;
 
 	/*
 	 * sum of only integers in pattern
 	 */
-	int tileSum;
-	float score=0;
+	public int sum;
+	
 
 	/**
 	 * contains values of mine and empty occurrence
@@ -41,57 +50,49 @@ public class Pattern implements Serializable{
 	/**
 	 * 0 for mine and 1 for empty
 	 */
-	int type;
+	public int type;
 
-	int x, y;
-	public int index = tileSum;
+	
+	/**
+	 * linked list
+	 */
 	public Pattern next;
 
-	public Pattern(String pattern)
+
+
+
+	public Pattern(String pattern, int type)
 	{
-		this.pattern = pattern;
-		calculateSum();
+		
+	this.pattern = pattern;
+	this.type = type; 
+	
+	score = new int[2];
+	
+	score[type]++; 
+		
+		//calculate sum and mine 
+		for(char c : pattern.toCharArray())
+		{
+			if(c==Tile.MINE)
+			{
+				mines++; 
+			}
+			else if(Character.isDigit(c))
+			{
+				sum+= Character.getNumericValue(c);
+			}
+		}
+		//end calculate sum and mine
+	
 	}
 
-	public Pattern(String p, int x, int y)
-	{
-		this.pattern = p;
-		calculateSum();
-		this.x = x;
-		this.y = y;
-	}
-
-	public Pattern(String p, int x, int y, int type)
-	{
-		this.pattern = p;
-		calculateSum();
-		this.x = x;
-		this.y = y;
-
-		this.type = type;
-		score = new int[2];
-		score[type]++;
-	}
-
-	public void incrementScore(int x)
-	{
-		score+=x;
-	}
-
-	public void decrementScore(int x)
-	{
-		score-=x;
-	}
-
-	public float getScore()
-	{
-		return this.score;
-	}
+	
 
 
 	// This function returns a score based on how
 	// well two patterns are similar.
-	public int match (Pattern pat)
+/*	private int match (Pattern pat)
 	{
 		char[] thisPatArray = getPatternArray();
 		char [] patArray = pat.getPatternArray();
@@ -134,6 +135,43 @@ public class Pattern implements Serializable{
 
 		// Get the max of both comparisons
 		return Arrays.stream(matchWeights).max().getAsInt();
+	}*/
+	
+	
+	public int matchToken(Token token)
+	{
+		int score = 0; 
+		
+		
+		for(int d = 1; d > 0 ; d-=2)
+		{
+			for(int init=0; init<4; init++)
+			{
+				int subscore = 0; 
+				for(int i=0; i<pattern.length(); i++)
+				{
+					int index = ((i*d)+pattern.length())%pattern.length(); 
+					
+					if(pattern.charAt(i) == token.token.charAt(index))
+					{
+						subscore++; 
+					}
+					else if(token.token.charAt(index)!= Tile.HIDDEN)
+					{
+						subscore--; 
+					}
+				
+				}//end for 
+				
+				if(subscore > score)
+				{
+					score = subscore; 
+				}
+			}//end init
+		}//end the d
+		
+		
+		return 0; 
 	}
 
 	public boolean isMatch(Pattern p)
@@ -194,15 +232,7 @@ public class Pattern implements Serializable{
 		return this.pattern;
 	}
 
-	public int getSum()
-	{
-		return this.tileSum;
-	}
-
-	public int getMines()
-	{
-		return this.numOfMines;
-	}
+	
 
 	/**
 	 * Appends the added pattern at the end of the linkedlist only if it's unique.
@@ -217,20 +247,14 @@ public class Pattern implements Serializable{
 			score[p.type]++;
 			return;
 		}
-
-		//adds linkedlist-style
+		
 		if (this.next == null)
+		{
+			PatternHash.count++; 
 			this.next = p;
+		}
 		else
 			this.next.append(p);
-
-		if (!checkExists(p))
-		{
-			if (this.next == null)
-				this.next = p;
-			else
-				this.next.append(p);
-		}
 	}
 	/**
 	 * Returns a string presentation of the pattern
@@ -277,17 +301,65 @@ public class Pattern implements Serializable{
 		else
 			System.out.println("null");
 	}
+	
+	public String[][] asGrid()
+	{
+		//match b*tch
+		int[] yfactor = {0,7,3};
+		int[] xfactor = {-1,2,1};
+		
+		int size = (int)Math.sqrt(pattern.length()+1); 
+		String[][] build = new String[size][size];
+ 
+		for(int i=0; i < pattern.length()+1; i++)
+		{
+			int y = i/size; 
+			int x = i%size; 
+			
+		//	System.out.println(y+""+x);
+			build[y][x] = ""+pattern.charAt(y*yfactor[y]-x*xfactor[y]);
+			
+			if(x==y && x==size/2)
+				build[y][x]= " "; //patterns has no fill, only score 
+			
+		}
+		
+		
+		
+		return build; 
+	}
+	
+	
+	public int strength()
+	{
+		if(score[TYPE_MINE] > score[TYPE_NON_MINE])
+		{
+			return score[TYPE_MINE]/(score[TYPE_NON_MINE]+1);
+		}
+		
+		return score[TYPE_NON_MINE]/(score[TYPE_MINE]+1); 
+	}
 
-	private int getCharValue(char c)
+	
+	public int type()
+	{
+		if(score[TYPE_MINE] > score[TYPE_NON_MINE])
+			return TYPE_MINE; 
+		
+		return TYPE_NON_MINE; 
+	}
+	
+	/*private int getCharValue(char c)
 	{
 		if (c == 'B' || c == '*')
 			return 0;
 
 		return Character.getNumericValue(c);
-	}
+	}*/
+	
 	// Calculate the sum of all of the numbers on
 	// the 3 x 3 pattern
-	private void calculateSum()
+	/*private void calculateSum()
 	{
 		char [] nums = getPatternArray();
 		for (int i=0; i < nums.length; i++)
@@ -300,5 +372,5 @@ public class Pattern implements Serializable{
 
 			tileSum += getCharValue(nums[i]); //TODO This does not skip mines and blanks!
 		}
-	}
+	}*/
 }

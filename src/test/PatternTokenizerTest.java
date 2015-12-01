@@ -5,9 +5,9 @@ import java.io.FileNotFoundException;
 import java.io.PrintStream;
 
 import grid.MapGrid;
-import grid.Tokenizer;
 import models.Pattern;
 import models.PatternHash;
+import models.Tokenizer;
 
 public class PatternTokenizerTest {
 
@@ -30,7 +30,7 @@ public class PatternTokenizerTest {
 		
 		//objects needed
 		MapGrid map = new MapGrid(width, height, minimum);
-		Tokenizer tokenizer = new Tokenizer(map); 
+		Tokenizer tokenizer = new Tokenizer(); 
 		PatternHash list = new PatternHash(); 
 		
 		//print stream 
@@ -45,7 +45,7 @@ public class PatternTokenizerTest {
 				{
 					if(map.grid[j][i]==0)
 						continue; 
-					list.addPattern(tokenizer.tokenizeTile3x3(i, j));
+					list.addPattern(tokenizer.tokenizePattern(i, j, map));
 				}
 	
 			//recreating map with the same attributes 
@@ -53,6 +53,11 @@ public class PatternTokenizerTest {
 		
 		}//end iteration 
 		
+		
+		
+		out.println(list);
+		
+		/*
 		//Printing Patterns 
 		//max mine = 8 (+empty) 
 		for(int m=0; m<9; m++)
@@ -86,6 +91,7 @@ public class PatternTokenizerTest {
 			}
 		}//end printing  
 		
+		*/
 		out.close(); 
 		System.out.println("END");
 	}

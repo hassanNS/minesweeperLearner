@@ -6,26 +6,30 @@ public class PatternMatchTest {
 
 	public static void main(String[] args) 
 	{
-		String pat = "********";
+		String pat = "01234567";
 		String[] patternTests = {
-				"********", 
-				"67012345", 
-				"45670123", 
+				"01234567", 
 				"23456701",
+				"45670123", 
+				"67012345", 
 				"07654321",
 				"65432107",
-				"43210765"};
+				"43210765",
+				"21076543",
+		};
 		
 		
-		Pattern patObj = new Pattern(pat);
 		
+		Pattern rootPattern = new Pattern(pat, 0);
+		
+		System.out.println("Pattern:\n"+ rootPattern);
 		for (int i=0; i < patternTests.length; i++)
 		{
-			Pattern patObj2 = new Pattern(patternTests[i]);
+			Pattern patObj2 = new Pattern(patternTests[i], 0);
 			
-			System.out.println("Sum of first one " + patObj.getSum());
-			System.out.println("Sum of first two " + patObj2.getSum());
-			System.out.println("Match score " + patObj.isMatch(patObj2));
+			
+			System.out.println("Pattern 2\n" + patObj2);
+			System.out.println("Do match score? " + rootPattern.isMatch(patObj2));
 		}
 
 	}

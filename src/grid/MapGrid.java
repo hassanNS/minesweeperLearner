@@ -60,23 +60,49 @@ public class MapGrid
 			}
 	
 			//place bomb in x,y and add +1 to surroundings (includes self) 
-			grid[ry][rx] = BOMB_INIT; 
-			
-			int ox = rx-1;
-			int oy = ry-1; 
-			
-			for(int j=0; j<9; j++)
-			{
-				int tx = ox + j%3; 
-				int ty = oy + j/3; 
-			
-				if(tx >= 0 && tx < width && ty >= 0 && ty < height)
-					grid[ty][tx]++; 
-				
-			}
+			placeMine(rx, ry); 
 		}
 				
 	}
+	
+	
+	public void placeMine(int x, int y)
+	{
+		grid[y][x] = BOMB_INIT; 
+		
+		int ox = x-1;
+		int oy = y-1; 
+		
+		for(int j=0; j<9; j++)
+		{
+			int tx = ox + j%3; 
+			int ty = oy + j/3; 
+		
+			if(tx >= 0 && tx < width && ty >= 0 && ty < height)
+				grid[ty][tx]++; 
+			
+		}
+	}
+	
+	public void removeMine(int x, int y)
+	{
+		grid[y][x] = BOMB_INIT; 
+		
+		int ox = x-1;
+		int oy = y-1; 
+		
+		for(int j=0; j<9; j++)
+		{
+			int tx = ox + j%3; 
+			int ty = oy + j/3; 
+		
+			if(tx >= 0 && tx < width && ty >= 0 && ty < height)
+				grid[ty][tx]--; 
+			
+		}
+	}
+	
+	
 	
 	/**
 	 * Returns string character representation of tile at given x and y

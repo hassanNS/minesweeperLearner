@@ -26,24 +26,23 @@ public class PatternHash implements Serializable{
 	 * Each KEY => maximum sum of number for the number of mines
 	 * Each VALUE => List of corresponding pattern objects
 	 */
-	private int maxMine = 8;
+	public static final int MAX_MINE = 8;
 	private int maxSum = 40;
-	private Pattern [][] patHashTable;
+	public Pattern [][] table;
+	public static int count; 
 	//int[] boundaries = {40, 40, 40, 36, 32, 24, 16, 8};
 
 	// Initializes the Hashtable
 	public PatternHash()
 	{
-		patHashTable = new Pattern[maxMine+1][maxSum+1];
+		count = 0; 
+		table = new Pattern[MAX_MINE+1][maxSum+1]; //includes 0
 	}
 
-	public Pattern getPat(int mines, int sum)
+	public Pattern getPat(int mine, int sum)
 	{
-		if ( (mines >= 0 && sum >= 0) && (mines < 9 && sum < 41) )
-		{
-			return patHashTable[mines][sum];
-		}
-		return null;
+		//System.out.println("mine:" + mine+" sum"+sum);
+			return table[mine][sum];
 	}
 
 	/**
@@ -52,9 +51,9 @@ public class PatternHash implements Serializable{
 	 */
 	public void addPattern(Pattern p)
 	{
-		Pattern root = patHashTable[p.getMines()][p.getSum()];
+		Pattern root = table[p.mines][p.sum];
 		if (root == null)
-			patHashTable[p.getMines()][p.getSum()] = p;
+			table[p.mines][p.sum] = p;
 		else
 			root.append(p);
 
@@ -67,7 +66,7 @@ public class PatternHash implements Serializable{
 	 */
 	public void printPatternLinkedList(int mineNum, int tileSum)
 	{
-		patHashTable[mineNum][tileSum].printLinkedList();
+		table[mineNum][tileSum].printLinkedList();
 	}
 
 	/**
@@ -78,17 +77,17 @@ public class PatternHash implements Serializable{
 	 */
 	public Pattern getPatternLinkedList(int mineNum, int tileSum)
 	{
-		return patHashTable[mineNum][tileSum];
+		return table[mineNum][tileSum];
 	}
 
 	/**
-	 * Write every pattern inside the hashtable to a csv file
+	 * Write every pattern inside the hashtable to a csv file TODO delete or move! -KLD
 	 */
 	public void writeToFile()
 	{
 		try{
 			PrintWriter writer = new PrintWriter("patternData.csv", "UTF-8");
-			for(int i=0; i<maxMine+1; i++)
+			for(int i=0; i<MAX_MINE+1; i++)
 			{
 				for(int j=0; j<maxSum+1; j++)
 				{
@@ -97,9 +96,9 @@ public class PatternHash implements Serializable{
 
 					Pattern temp = getPatternLinkedList(i, j);
 					do{
-						writer.printf("%s,%d,%d,%f\n",
-								temp.getPatternString(), temp.getMines(),
-								temp.getSum(), temp.getScore());
+						writer.printf("%s,%d,%d\n",
+								temp.getPatternString(), temp.mines,
+								temp.sum);
 						temp = temp.next;
 					}
 					while(temp != null);
@@ -113,6 +112,71 @@ public class PatternHash implements Serializable{
 			System.out.println();
 		}
 	}
+
+
+	@Override
+	public String toString()
+	{
+		String build = ""; 
+		
+		for(int m=0; m<table.length; m++)
+		{
+			build+="Mine " + m +"\n"; 
+			for(int s=0; s<table[m].length; s++)
+			{
+				Pattern pointer = table[m][s];
+					
+				int size = 3;  //TODO replaae with size
+				
+				String[] patternBuild = new String[size];
+				for(int i=0; i<size; i++)
+					patternBuild[i] = ""; 
+				
+				while(pointer != null)
+				{
+					String[][] patternGrid = pointer.asGrid(); 
+					for(int i=0; i<size; i++)
+					{
+						//get line of chars at line i 
+						String subBuild = "";  
+						for(int j=0; j<size; j++)
+						{
+							subBuild+= patternGrid[i][j]; 
+						}
+						patternBuild[i]+= subBuild + "\t"; 
+					}
+					pointer = pointer.next; 
+				}
+				
+				//print patterns for that sum 
+				
+				if(table[m][s] !=null)
+				{
+					build+= "\tSum: " + s +"\n";
+					
+					for(int i=0; i<patternBuild.length; i++)
+					{
+						build+="\t\t"+patternBuild[i]+"\n"; 
+					}
+					build+="\n"; 
+				}
+				
+				
+				
+			}//end sum
+			
+			
+			
+			
+		}//end mine
+		
+		
+		
+		
+		return build; 
+	}
+	
+	
 }
 
 

@@ -8,13 +8,13 @@ import java.sql.Savepoint;
 import java.util.ArrayList;
 
 import grid.MapGrid;
-import grid.Tokenizer;
 import models.Pattern;
 import models.PatternHash;
+import models.Tokenizer;
 
 public class GridGenerationTest {
 
-	public static void main(String[] args) {
+	/*hell public static void main(String[] args) {
 		//set values
 		int width = 30, 
 			height = 20; 
@@ -60,6 +60,6 @@ public class GridGenerationTest {
 		 	fileOut.close();
 		 	System.out.printf("Serialized data is saved in hashTable.ser");
 		} catch(Exception e){}
-	}
+	}*/
 
 }
