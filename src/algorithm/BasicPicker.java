@@ -18,11 +18,6 @@ public class BasicPicker
 	
 	public void addToken(Token token)
 	{
-		if(root == null)
-			root = token;
-		else
-			root.append(token); 
-		
 		//find token's best pattern pair
 		int hightestScore = -1; 
 		
@@ -73,6 +68,13 @@ public class BasicPicker
 				}//end while
 			}//end sum 
 		}//end mine
+		
+		
+		
+		if(root == null)
+			root = token;
+		else
+			root.append(token); 
 		
 		if(token.pair == null)
 			System.out.println("bich token.pair is a missing");
