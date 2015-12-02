@@ -7,7 +7,6 @@ import grid.MapGrid;
 
 public class PatternListGenerator 
 {
-
 	
 	public static PatternHash generate(int width, int height, int mine, int iteration)
 	{		
@@ -76,8 +75,7 @@ public class PatternListGenerator
 		
 		return list; 
 	}
-	
-	
+		
 	public static PatternHash untilEnough(int width, int height, int mine, int max_thresh)
 	{
 		//objects needed

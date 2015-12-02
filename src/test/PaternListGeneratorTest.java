@@ -17,7 +17,7 @@ public class PaternListGeneratorTest
 		//System.out.println(list.count);
 		
 		
-		PatternHash list = PatternListGenerator.untilEnough(8, 8, 10, 1000);
+		PatternHash list = PatternListGenerator.untilEnough(8, 8, 10, 5000);
 		
 		PrintStream out = new PrintStream(new File("the dream"));
 
@@ -43,6 +43,8 @@ public class PaternListGeneratorTest
 		 * 295000	count: 48300	diff: 43
 			Unique patterns: 48302
 			
+			thresh 1000: 
+			
 			248455	count: 48140
 			Unique patterns: 48140
 			
@@ -50,6 +52,8 @@ public class PaternListGeneratorTest
 			357333	count: 48998
 			Found pattern:48998
 			
+			thresh = 5000 
+			754833	count: 50142
 		 */
 		
 	

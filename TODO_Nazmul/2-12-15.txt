@@ -1,0 +1,3 @@
+Load/Store Patternhash.
+Calculate success clicks/flags and fail clicks/flags.
+Increase/decrease pattern score based on attempt fail or success by certainty and expectancy.    

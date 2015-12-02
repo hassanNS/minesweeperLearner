@@ -28,7 +28,7 @@ public class AutoTest
 		
 		System.out.println(g);
 		
-		PatternHash list = PatternListGenerator.generate(width, height, mine, 50000);  
+		PatternHash list = PatternListGenerator.untilEnough(width, height, mine, 50000);  
 		
 		
 		System.out.println("Found pattern:" + list.count);
