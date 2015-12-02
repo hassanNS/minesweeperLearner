@@ -132,6 +132,7 @@ public class PatternHash implements Serializable{
 				for(int i=0; i<size; i++)
 					patternBuild[i] = ""; 
 				
+				String scores = "";
 				while(pointer != null)
 				{
 					String[][] patternGrid = pointer.asGrid(); 
@@ -145,6 +146,9 @@ public class PatternHash implements Serializable{
 						}
 						patternBuild[i]+= subBuild + "\t"; 
 					}
+					
+					scores += pointer.score[0] + ":" + pointer.score[1]+ "\t"; 
+					
 					pointer = pointer.next; 
 				}
 				
@@ -158,20 +162,16 @@ public class PatternHash implements Serializable{
 					{
 						build+="\t\t"+patternBuild[i]+"\n"; 
 					}
+					
+					build+= "\t\t"+scores+"\n"; 
 					build+="\n"; 
 				}
 				
-				
-				
+
 			}//end sum
 			
 			
-			
-			
 		}//end mine
-		
-		
-		
 		
 		return build; 
 	}

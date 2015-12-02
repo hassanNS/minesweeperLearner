@@ -143,7 +143,7 @@ public class Pattern implements Serializable{
 		int score = 0; 
 		
 		
-		for(int d = 1; d > 0 ; d-=2)
+		for(int d = 1; d >= -2 ; d-=2)
 		{
 			for(int init=0; init<4; init++)
 			{
@@ -154,9 +154,13 @@ public class Pattern implements Serializable{
 					
 					if(pattern.charAt(i) == token.token.charAt(index))
 					{
+						subscore+=2; 
+					}
+					else if(token.token.charAt(index)== Tile.HIDDEN )
+					{
 						subscore++; 
 					}
-					else if(token.token.charAt(index)!= Tile.HIDDEN)
+					else
 					{
 						subscore--; 
 					}
@@ -170,14 +174,13 @@ public class Pattern implements Serializable{
 			}//end init
 		}//end the d
 		
-		
 		return 0; 
 	}
 
 	public boolean isMatch(Pattern p)
 	{
 		char[] thisPatArray = getPatternArray();
-		char [] patArray = p.getPatternArray();
+		char[] patArray = p.getPatternArray();
 
 		int PATLENGTH = patArray.length;
 

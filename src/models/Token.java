@@ -10,6 +10,7 @@ public class Token
 	public int mine; 
 	public int border; 
 	public int hidden; 
+	public int empty; 
 	
 	public int x, y; 
 	
@@ -40,7 +41,10 @@ public class Token
 			}
 			else if(Character.isDigit(c))
 			{
-				sum+= Character.getNumericValue(c);
+				int n = Character.getNumericValue(c); 
+				sum+= n; 
+				if(n==0)
+					empty++; 
 			}
 		}
 	}
@@ -60,22 +64,39 @@ public class Token
 		return mine + (hidden/3 + 1); 
 	}
 	
+	public int countNumbers()
+	{
+		return 8 - (mine+hidden+border+empty); 
+	}
 	
 	public void append(Token t)
 	{
-		if(this.x == t.x && this.y == t.y )
+		 if(next == null)
+			{
+				//System.out.println("added new token: \n" + t);
+				this.next = t; 
+			}
+		else if(next.x == t.x && next.y == t.y)
 		{
+			
+			//System.out.println("updated " + x + " " + y);
 			//update my score and my token
-			this.sum = t.sum; 
-			this.mine = t.mine; 
-			this.border = t.border; 
-			this.pair  = t.pair; 
-			this.token = t.token; 
-		}
-		else if(next == null)
-		{
-			System.out.println("added new token: \n" + t);
+			
+			Token p; 
+			if(next==null)
+				p = null; 
+			else 
+				p = next.next; 
+			
 			this.next = t; 
+			
+			t.next = p; 
+			
+			//this.sum = t.sum; 
+			//this.mine = t.mine; 
+			//this.border = t.border; 
+			//this.pair  = t.pair; 
+			//this.token = t.token; 
 		}
 		else 
 		{

@@ -17,6 +17,7 @@ public class MineSweeper
 	final int HIDDEN = 0; 
 	final int FLAGGED = 1; 
 	
+	public int minesLeft; 
 	 
 	int[][] tileStatus; 
 	
@@ -26,6 +27,8 @@ public class MineSweeper
 	public MineSweeper(MapGrid m)
 	{
 		map = m; 
+		
+		minesLeft = m.mine; 
 		
 		tileStatus = new int[map.height][map.width];
 		
@@ -53,6 +56,7 @@ public class MineSweeper
 	 */
 	public boolean click(int x, int y)
 	{
+	
 		if(x < 0 || x >= map.width || y < 0 || y >= map.height)
 			return true; 
 		
@@ -78,7 +82,7 @@ public class MineSweeper
 			click(x+1, y-1);
 			
 			click(x,y+1); 
-			//click(x,y); 
+
 			click(x,y-1); 
 			
 			
@@ -112,12 +116,50 @@ public class MineSweeper
 					}
 				}
 			}//end for
-			
-			
 		}
 		//up left right down
-		
+		picker.clicked(x,y); 
 		return true; 
+	}
+	
+	
+	
+	public void flag(int x, int y)
+	{
+		minesLeft--; 
+		if(tileStatus[y][x] != HIDDEN)
+			return; 
+		
+		
+			picker.clicked(x,y); 
+		
+		
+		tileStatus[y][x] = FLAGGED; 
+			
+		//offsets
+		int[] xo = {0,1,2,2,2,1,0,0}; 
+		int[] yo = {0,0,0,1,2,2,2,1};
+		
+		for(int i=0; i<xo.length; i++)
+		{
+			int lx =  x-1 + xo[i]; //local x 
+			int ly =  y-1 + yo[i]; //local y
+			
+			if(lx < 0 || lx >= map.width || ly < 0 ||  ly >= map.height)
+				continue;
+			
+			if(tileStatus[ly][lx] == HIDDEN)
+			{
+				if(picker != null)
+				{
+					Token token = tokenize(lx, ly); 
+					if(token!=null)
+						picker.addToken(token);
+				}
+			}
+		}//end for	
+		
+		
 	}
 	
 	

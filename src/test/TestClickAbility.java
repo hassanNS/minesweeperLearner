@@ -28,7 +28,11 @@ public class TestClickAbility
 		
 		System.out.println(g);
 		
-		PatternHash list = PatternListGenerator.generate(width, height, mine, 10000);  
+		System.out.println("Generating patterns...");
+		
+		//PatternHash list = PatternListGenerator.generate(width, height, mine, 50000);  
+		PatternHash list = PatternListGenerator.untilEnough(width, height, mine, 1000);  
+		
 		
 		System.out.println("Found pattern:" + list.count);
 		
@@ -41,15 +45,19 @@ public class TestClickAbility
 		m.picker = picker; 
 		
 		boolean onGame = true; 
+		
+		int c; 
 		int x; 
 		int y; 
+		
+	
 		
 		Scanner input = new Scanner(System.in); 
 		
 		do
 		{
+			
 			System.out.println(m);
-
 			
 		try{
 			Token token = picker.pickToken();
@@ -57,7 +65,8 @@ public class TestClickAbility
 			System.out.println("We suggest: x,y : "+ token.x + " "+ token.y + " as " + ((token.pair.type()==Pattern.TYPE_MINE)? "Mine" : "Not mine"));
 		}catch (Exception e)
 		{
-			System.out.println("Erorr picking the asshole");
+			System.out.println("No suggestion!");
+			
 			Token pointer = picker.root;
 			while(pointer!=null)
 			{
@@ -65,22 +74,34 @@ public class TestClickAbility
 				pointer = pointer.next; 
 			}
 		}
-			
-			System.out.print("Enter x y: ");
+			System.out.println("(c=0 click, c=1 flag)");
+			System.out.print("Enter c x y: ");
+			c = input.nextInt(); 
 			x = input.nextInt(); 
 			y = input.nextInt(); 
 			
-			onGame = m.click(x, y); 
-			picker.clicked(x,y); 
-			//Token token = m.tokenize(2, 5); 
-			//System.out.println("Token at 2 5\n" + token);
 			
-			//System.out.println(list);
+			if(c==0)
+			{
+				onGame = m.click(x, y); 
+			}else
+			{
+				m.flag(x, y);
+			}
 		
+			
+			if(m.minesLeft==0)
+			{
+				break; 
+			}
+			
+			
 		}while(onGame);
 		
+		
+		
 		System.out.println(m);	
-		System.out.println("Game Over!");
+		System.out.println("Game Over!" + ((m.minesLeft==0)?"YOU WIN!" : "Lost"));
 	
 		input.close(); 
 	}

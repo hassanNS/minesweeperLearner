@@ -18,7 +18,7 @@ public class MapGrid
 	int width; 
 	int height; 
 	
-	int mine; 
+	public int mine; 
 	
 	public MapGrid(int w, int h, int m)
 	{
