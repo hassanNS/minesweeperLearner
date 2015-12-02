@@ -11,6 +11,7 @@ public class Token
 	public int border; 
 	public int hidden; 
 	public int empty; 
+	public float certinty;
 	
 	public int x, y; 
 	
@@ -29,8 +30,10 @@ public class Token
 		//get string stats: hidden, mine, border, sum
 		for(char c : s.toCharArray())
 		{
-			if(c == Tile.HIDDEN)
+			if(c == Tile.HIDDEN) 
+			{
 				hidden++; 
+			}
 			else if(c == Tile.MINE)
 			{
 				mine++; 
@@ -47,6 +50,9 @@ public class Token
 					empty++; 
 			}
 		}
+		
+		// Calculate how certain we are based on how many tiles are exposed
+		certinty = (float) (1.0 - (hidden/8));
 	}
 	
 	public int averageSum()

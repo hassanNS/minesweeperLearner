@@ -1,7 +1,5 @@
 package algorithm;
 
-import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
-
 import models.Pattern;
 import models.PatternHash;
 import models.Token;
@@ -51,8 +49,14 @@ public class BasicPicker
 		
 		for(int mine = token.mine; mine < token.estemateMaxMine(); mine++)
 		{
+			if (mine > 8)
+				continue;
+			
 			for(int sum = token.averageSum(); sum < token.estemateMaxSum(); sum++)
 			{
+				if (sum > 40)
+					continue;
+				
 				Pattern pointer = list.getPat(mine, sum); //  
 				
 				if(pointer==null)
@@ -95,6 +99,10 @@ public class BasicPicker
 	
 	public void clicked(int x, int y)
 	{
+		if(root == null){
+			return;
+		}
+		
 		if(root.clicked(x, y))
 		{
 			root = root.next; 

@@ -11,13 +11,14 @@ import models.Token;
  */
 public class MineSweeper 
 {
-	MapGrid map; 
+	public MapGrid map; 
 	
 	final int EXPOSED = -1; 
 	final int HIDDEN = 0; 
 	final int FLAGGED = 1; 
 	
 	public int minesLeft; 
+	public boolean isFirstClick;
 	 
 	int[][] tileStatus; 
 	
@@ -29,6 +30,8 @@ public class MineSweeper
 		map = m; 
 		
 		minesLeft = m.mine; 
+		
+		isFirstClick = true;
 		
 		tileStatus = new int[map.height][map.width];
 		
@@ -61,7 +64,7 @@ public class MineSweeper
 			return true; 
 		
 		//already revealed
-		if (tileStatus[y][x] == EXPOSED )
+		if (tileStatus[y][x] == EXPOSED)
 			return true; 
 				
 		//reveals clicked tile 
@@ -69,6 +72,19 @@ public class MineSweeper
 		
 		//System.out.println("clicked: " + map.grid[y][x]);
 		
+		while(isFirstClick){
+			if(map.grid[y][x] != 0)	
+			{
+				map.regenerate();
+				System.out.println("regenerated");
+			}
+			else{
+				isFirstClick = false;
+				System.out.println("Clicked " + x + " " + y + " mapgrid: " + map.grid[y][x]);
+				System.out.print(map + "\n");
+			}
+		}
+
 		//return false if bomb 
 		if(map.grid[y][x] <  0) //bomb
 			return false; 

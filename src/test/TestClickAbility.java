@@ -4,8 +4,6 @@ import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.Scanner;
 
-import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
-
 import algorithm.BasicPicker;
 import grid.MapGrid;
 import grid.MineSweeper;
