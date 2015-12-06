@@ -110,7 +110,7 @@ public class PatternListGenerator
 						}
 			
 					//recreating map with the same attributes 
-					map.mine = min_mine + (itt%35); 
+					map.mine = min_mine + (itt%15);  //max is 8x8 = 64 
 					map.regenerate();
 					
 					

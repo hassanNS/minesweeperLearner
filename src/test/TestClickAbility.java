@@ -47,9 +47,7 @@ public class TestClickAbility
 		int c; 
 		int x; 
 		int y; 
-		
-	
-		
+			
 		Scanner input = new Scanner(System.in); 
 		
 		do

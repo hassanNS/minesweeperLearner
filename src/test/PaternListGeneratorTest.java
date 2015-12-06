@@ -17,17 +17,20 @@ public class PaternListGeneratorTest
 		//System.out.println(list);
 		//System.out.println(list.count);
 		
+		int w = 8; 
+		int h = 8; 
+		int m = 10; 
 		
-		PatternHash list = PatternListGenerator.untilEnough(8, 8, 10, 1000000);
+		int param = 5000000;
 		
-		PrintStream out = new PrintStream(new File("5DEC619-U1m"));
+		PatternHash list = PatternListGenerator.untilEnough(w, h, m, param);
+		
+		PrintStream out = new PrintStream(new File("U5M"));
 		out.println(list);
 		out.close(); 
 		
-		
 		//Saver_Loader.saveHashTable(list, "1mThresh.ser");
 
-		System.out.println("Unique count patterns: " + list.count);
 		System.out.println("Unique length patterns: " + list.length);
 		
 		
@@ -48,6 +51,9 @@ public class PaternListGeneratorTest
 			
 			thresh = 5000 
 			754833	count: 50142
+			
+			
+			
 		 */
 		
 	
