@@ -6,6 +6,7 @@ import java.io.PrintStream;
 
 import models.PatternHash;
 import models.PatternListGenerator;
+import models.Saver_Loader;
 
 public class PaternListGeneratorTest 
 {
@@ -17,26 +18,19 @@ public class PaternListGeneratorTest
 		//System.out.println(list.count);
 		
 		
-		PatternHash list = PatternListGenerator.untilEnough(8, 8, 10, 5000);
+		PatternHash list = PatternListGenerator.untilEnough(8, 8, 10, 1000000);
 		
-		PrintStream out = new PrintStream(new File("the dream"));
-
+		PrintStream out = new PrintStream(new File("5DEC619-U1m"));
 		out.println(list);
-		
 		out.close(); 
 		
-		System.out.println("Unique patterns: " + list.count);
 		
-		/*for(int i=1; i<11; i++)
-		{
-			PatternHash list = PatternListGenerator.generateCount(8, 8, 10, i*10000); 
+		//Saver_Loader.saveHashTable(list, "1mThresh.ser");
+
+		System.out.println("Unique count patterns: " + list.count);
+		System.out.println("Unique length patterns: " + list.length);
 		
-			System.out.println(""+i + "- " + list.count + " diff:  " + (list.count-prev));
-			
-			prev = list.count; 
-		}*/
 		
-		//41180 
 		
 		/*
 		 *  optimal

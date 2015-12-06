@@ -90,7 +90,7 @@ public class PatternListGenerator
 				
 				int prev = 0; 
 				int thresh =0; 
-				int itt =0; 
+				int itt =1; 
 				
 				//tokenize then regenerate 
 				while(thresh < max_thresh)
@@ -114,13 +114,13 @@ public class PatternListGenerator
 					map.regenerate();
 					
 					
-					if(itt%5000==0)
+					if(itt%10000==0)
 					{
-						System.out.println(""+itt + "\tcount: " + list.count + "\tdiff: " + (list.count-s_prev));
-						s_prev = list.count;
+						System.out.println(""+itt + "\tcount: " + list.length + "\tdiff: " + (list.length-s_prev));
+						s_prev = list.length;
 					}
 					
-					if((list.count - prev) == 0)
+					if((list.length - prev) == 0)
 					{
 						thresh++; 
 					}
@@ -129,7 +129,7 @@ public class PatternListGenerator
 						thresh = 0; 
 					}
 					
-					prev = list.count; 
+					prev = list.length; 
 					
 					
 					itt++; 
@@ -138,7 +138,7 @@ public class PatternListGenerator
 				
 				//System.out.println("Itteration " + itt);
 				
-				System.out.println(""+itt + "\tcount: " + list.count );
+				System.out.println(""+itt + "\tcount: " + list.length );
 				
 				return list; 
 	}

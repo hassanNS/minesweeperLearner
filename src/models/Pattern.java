@@ -59,11 +59,8 @@ public class Pattern implements Serializable{
 	public Pattern next;
 
 
-
-
 	public Pattern(String pattern, int type)
 	{
-		
 	this.pattern = pattern;
 	this.type = type; 
 	
@@ -242,22 +239,23 @@ public class Pattern implements Serializable{
 	 * 	Otherwise, increment the parallel pattern by the type of the new pattern.
 	 * @param p new pattern to add
 	 */
-	public void append(Pattern p)
+	public boolean append(Pattern p)
 	{
 		//catch duplicates
 		if(isMatch(p))
 		{
 			score[p.type]++;
-			return;
+			return false;
 		}
 		
 		if (this.next == null)
 		{
-			PatternHash.count++; 
+			PatternHash.count++;
 			this.next = p;
+			return true; 
 		}
 		else
-			this.next.append(p);
+			return (this.next.append(p));
 	}
 	/**
 	 * Returns a string presentation of the pattern
@@ -289,7 +287,7 @@ public class Pattern implements Serializable{
 				return true;
 			temp = temp.next;
 		}
-
+		
 		return false;
 	}
 

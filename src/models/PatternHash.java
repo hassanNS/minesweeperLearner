@@ -31,10 +31,13 @@ public class PatternHash implements Serializable{
 	public Pattern [][] table;
 	public static int count; 
 	//int[] boundaries = {40, 40, 40, 36, 32, 24, 16, 8};
-
+	public int length; 
+	
+	
 	// Initializes the Hashtable
 	public PatternHash()
 	{
+		length = 0; 
 		count = 0; 
 		table = new Pattern[MAX_MINE+1][maxSum+1]; //includes 0
 	}
@@ -53,9 +56,15 @@ public class PatternHash implements Serializable{
 	{
 		Pattern root = table[p.mines][p.sum];
 		if (root == null)
+		{
+			length++; 
 			table[p.mines][p.sum] = p;
+		}
 		else
-			root.append(p);
+		{
+			if(root.append(p))
+				length++; 
+		}
 
 	}
 
