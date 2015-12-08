@@ -45,7 +45,13 @@ public class PatternHash implements Serializable{
 	public Pattern getPat(int mine, int sum)
 	{
 		//System.out.println("mine:" + mine+" sum"+sum);
-			return table[mine][sum];
+		if(sum > maxSum)
+			sum = maxSum; 
+		
+		if(mine > MAX_MINE)
+			mine = MAX_MINE; 
+		
+		return table[mine][sum];
 	}
 
 	/**

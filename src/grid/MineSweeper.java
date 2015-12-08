@@ -59,7 +59,6 @@ public class MineSweeper
 	 */
 	public boolean click(int x, int y)
 	{
-	
 		if(x < 0 || x >= map.width || y < 0 || y >= map.height)
 			return true; 
 		
@@ -69,21 +68,7 @@ public class MineSweeper
 				
 		//reveals clicked tile 
 		tileStatus[y][x] = EXPOSED; 
-		
-		//System.out.println("clicked: " + map.grid[y][x]);
-		
-		while(isFirstClick){
-			if(map.grid[y][x] != 0)	
-			{
-				map.regenerate();
-				System.out.println("regenerated");
-			}
-			else{
-				isFirstClick = false;
-				System.out.println("Clicked " + x + " " + y + " mapgrid: " + map.grid[y][x]);
-				System.out.print(map + "\n");
-			}
-		}
+				
 
 		//return false if bomb 
 		if(map.grid[y][x] <  0) //bomb
@@ -139,16 +124,21 @@ public class MineSweeper
 	}
 	
 	
+	public void firstClick(int x, int y)
+	{
+		while(map.grid[y][x] != 0)	
+				map.regenerate();	
+		
+		click(x,y);
+	}
+	
 	
 	public void flag(int x, int y)
 	{
-		minesLeft--; 
 		if(tileStatus[y][x] != HIDDEN)
 			return; 
 		
-		
-			picker.clicked(x,y); 
-		
+		minesLeft--; 
 		
 		tileStatus[y][x] = FLAGGED; 
 			
@@ -169,13 +159,13 @@ public class MineSweeper
 				if(picker != null)
 				{
 					Token token = tokenize(lx, ly); 
-					if(token!=null)
+					if(token != null)
 						picker.addToken(token);
 				}
 			}
 		}//end for	
 		
-		
+		picker.clicked(x,y); 
 	}
 	
 	

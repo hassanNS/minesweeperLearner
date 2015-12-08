@@ -11,7 +11,7 @@ public class Token
 	public int border; 
 	public int hidden; 
 	public int empty; 
-	public float certinty;
+	
 	
 	public int x, y; 
 	
@@ -51,8 +51,6 @@ public class Token
 			}
 		}
 		
-		// Calculate how certain we are based on how many tiles are exposed
-		certinty = (float) (1.0 - (hidden/8));
 	}
 	
 	public int averageSum()
@@ -74,6 +72,13 @@ public class Token
 	{
 		return 8 - (mine+hidden+border+empty); 
 	}
+	// Calculate how certain we are based on how many tiles are exposed
+	public float uncertinty()
+	{
+		return  (((float)hidden)/8);
+	}
+	
+	
 	
 	public void append(Token t)
 	{
@@ -110,7 +115,7 @@ public class Token
 		}	
 	}
 	
-	public boolean clicked(int x, int y)
+	public boolean isClicked(int x, int y)
 	{	
 		return (this.x == x && this.y == y); 
 	}

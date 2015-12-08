@@ -24,16 +24,17 @@ public class BasicPicker
 		
 		token.pair = list.getPat(token.mine,token.averageSum()); 
 		
-		int pussy = 0; 
-		int dick = 1; 
+		int mineStart = 0; 
+		int sumStart = 0; 
+		
 		while(token.pair == null)
 		{
-			token.pair = list.getPat(token.mine + pussy,token.averageSum()+ dick++); 
+			token.pair = list.getPat(token.mine + mineStart,token.averageSum()+ sumStart++); 
 			
-			if(token.averageSum()+ dick==41)
+			if(token.averageSum()+ sumStart==41)
 			{
-				dick=0;
-				pussy++; 
+				sumStart=0;
+				mineStart++; 
 			}
 				
 		}
@@ -67,18 +68,21 @@ public class BasicPicker
 				{
 					pointer = pointer.next; 
 					
-					if(pointer.matchToken(token) >= hightestScore)
+					if(pointer.matchToken(token) > hightestScore)
 					{
-						if(token.pair == null)
-							System.out.println("bich as token.pair is null");
+						token.pair = pointer; 
+						hightestScore = pointer.matchToken(token); 
+					}
 						
-						
-						if(pointer.strength() >  token.pair.strength())
-						{
+					else if(pointer.matchToken(token) ==  hightestScore)
+					{
+						if(pointer.strength() > token.pair.strength())
+						{	
 							token.pair = pointer; 
-							hightestScore = pointer.matchToken(token); 
+							//hightestScore = pointer.matchToken(token); 
 						}
 					}
+					
 				}//end while
 			}//end sum 
 		}//end mine
@@ -99,30 +103,28 @@ public class BasicPicker
 	
 	public void clicked(int x, int y)
 	{
-		if(root == null){
+		if(root == null)
 			return;
-		}
 		
-		if(root.clicked(x, y))
+		
+		
+		if(root.isClicked(x, y))
 		{
+			//System.out.println("removed root at "+x +","+y);
 			root = root.next; 
 			return; 
 		}
 		
 		Token  p = root; 
 		
-		while(p != null)
+		while(p.next != null)
 		{
-			if(p.next !=null)
-				if(p.next.clicked(x, y))
-				{
-					if(p.next.next==null)
-						p.next = null; 
-					else
-						p.next = p.next.next; 
-					
-					return; 
-				}
+			if(p.next.isClicked(x, y))
+			{
+				//System.out.println("removed token at "+x +","+y);
+				p.next = p.next.next; 
+				return; 
+			}
 		p = p.next; 
 		}
 			//System.out.println("no token was removed");

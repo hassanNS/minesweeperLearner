@@ -17,15 +17,16 @@ public class PaternListGeneratorTest
 		//System.out.println(list);
 		//System.out.println(list.count);
 		
-		int w = 8; 
-		int h = 8; 
-		int m = 10; 
 		
-		int param = 5000000;
+		int w = 5; 
+		int h = 5; 
+		int m = 4; 
+		
+		int param = 500000;
 		
 		PatternHash list = PatternListGenerator.untilEnough(w, h, m, param);
 		
-		PrintStream out = new PrintStream(new File("U5M"));
+		PrintStream out = new PrintStream(new File("8_8_8_500000"));
 		out.println(list);
 		out.close(); 
 		
