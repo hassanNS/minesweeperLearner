@@ -1,7 +1,11 @@
 package test;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.util.Random;
+import java.util.Scanner;
+
 import algorithm.BasicPicker;
 import grid.MapGrid;
 import grid.MineSweeper;
@@ -19,6 +23,16 @@ public class AutoTest
 	 *  8x8			18:24982						1:24999
 	 *  			15413:16570						14001:15063
 	 *  			40663:8412						36130:9936
+	 *  
+	 *  
+	 *  
+	 *  int width = 8;
+	 *	int height = 8; 
+	 *	int mine = 8; 
+	 *	int games = 250000;
+	 *  Win:296 Lost:249704
+	 *	Click Suc: 154024 Click Fail: 171333
+	 *	Flag Suc: 387848 Flag Fail: 78371
 	 */
 
 	public static void main(String[] args) throws FileNotFoundException 
@@ -26,7 +40,7 @@ public class AutoTest
 		int width = 8;
 		int height = 8; 
 		int mine = 8; 
-		int games = 250000;
+		int games = 1000000;
 		
 		//controls 
 		boolean gridPrint = false; 
@@ -245,10 +259,72 @@ public class AutoTest
 			
 			String[] wonGames = gameNumberWins.split(" "); 
 			
+			PrintStream out = new PrintStream(new File("gameWon"));
+			
 			for(int i=0; i<wonGames.length; i++)
 			{
 				System.out.println(wonGames[i]);
+				out.println(wonGames[i]);
 			}
+			
+			out.close();
+			
+			int maxScore = games;  //number of games
+			int[] score = new int[10]; 
+			
+			for(int i=0; i<score.length; i++)
+				score[i] = 0; 
+			
+			//Scanner input = new Scanner(System.in); 
+			
+			//String build = ""; 
+			
+			/*while(input.hasNext())
+			{
+				
+				String  in = input.nextLine() + " ";  
+				System.out.println("added " +in);
+				build += in; 
+				
+				if(in.startsWith("0"))
+					break; 
+			}*/
+			
+			//input.close();
+			
+			//System.out.println("Splitting: " + build);
+			String[] valuesStr = wonGames;//build.split(" "); 
+			
+			int[] values = new int[valuesStr.length];
+			
+			System.out.println("Adding..");
+			for(int i=0; i<values.length-1; i++)
+			{
+				try
+				{
+				values[i] = Integer.parseInt(valuesStr[i].replace("\\D", "")); 
+				
+				score[(values[i]*score.length)/maxScore]++; 
+				System.out.println("found " + values[i] );
+				}
+				catch(Exception e)
+				{
+					System.out.println("Happened at " + i);
+					e.printStackTrace();
+				}
+			
+			}
+			
+			
+			for(int i=0; i<score.length; i++)
+			{
+				System.out.println((i+1)+"-\t"+score[i]);
+			}
+			
+			
+			
+			
+			
 		}//end if print
 	
 	}

@@ -6,7 +6,35 @@ public class WhateverTest {
 
 	public static void main(String[] args)
 	{
-		int maxScore = 200000;  //number of games
+		/**
+		 * 250,000 games
+		  	1-	23
+			2-	20
+			3-	26
+			4-	36
+			5-	32
+			6-	24
+			7-	29
+			8-	28
+			9-	34
+			10-	44
+			
+			1,000,000 games
+			1-	123
+			2-	128
+			3-	144
+			4-	133
+			5-	139
+			6-	153
+			7-	129
+			8-	144
+			9-	132
+			10-	152
+		 * 
+		 * 
+		 */
+		
+		int maxScore = 250000;  //number of games
 		int[] score = new int[10]; 
 		
 		for(int i=0; i<score.length; i++)
@@ -39,7 +67,7 @@ public class WhateverTest {
 		{
 			try
 			{
-			values[i] = Integer.parseInt(valuesStr[i]); 
+			values[i] = Integer.parseInt(valuesStr[i].replace("\\D", "")); 
 			
 			score[(values[i]*score.length)/maxScore]++; 
 			System.out.println("found " + values[i] );
