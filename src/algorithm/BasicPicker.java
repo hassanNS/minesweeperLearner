@@ -3,23 +3,45 @@ package algorithm;
 import models.Pattern;
 import models.PatternHash;
 import models.Token;
-
+/**
+ * BasicPicker holds a PatternHash and a linkedlist of tokens. It has two jobs: 
+ * 
+ * First, to add tokens and pair each token with best pattern 
+ * Second, picks mostnj reliable token. 
+ * 
+ * 
+ * @author KLD
+ *
+ */
 public class BasicPicker 
 {
+	/**
+	 * Pattern List 
+	 */
 	public PatternHash list; 
+	
+	/**
+	 * Token List 
+	 */
 	public Token root; 
 	
-	
+	/**
+	 * sets passed PatternHash
+	 * @param ph PatternHash
+	 */
 	public BasicPicker(PatternHash ph)
 	{
 		list = ph; 
 	}
 
-	
+	/**
+	 * 
+	 * Finds best pattern pair for the token and then add to list (or update token if exist).
+	 *
+	 * @param token new/updated token
+	 */
 	public void addToken(Token token)
 	{
-		//System.out.println("Adding token: \n" + token);
-		//find token's best pattern pair
 		int hightestScore = -1; 
 		
 		token.pair = list.getPat(token.mine,token.averageSum()); 
@@ -27,6 +49,7 @@ public class BasicPicker
 		int mineStart = 0; 
 		int sumStart = 0; 
 		
+		//sets initial pair 
 		while(token.pair == null)
 		{
 			token.pair = list.getPat(token.mine + mineStart,token.averageSum()+ sumStart++); 
@@ -36,34 +59,34 @@ public class BasicPicker
 				sumStart=0;
 				mineStart++; 
 			}
-				
 		}
 		
-		if(token.pair == null)
-			System.out.println("pussy ass token.pair is null");
-		
-		
-		//System.out.println("Paired Token: \n" + token);
-		
-		//System.out.println("Search range: mine:"+token.mine + "-"+token.estemateMaxMine());
-		//System.out.println("\tSum:"+token.averageSum() + "-"+token.estemateMaxSum());
-		
+		/*
+		 * Picked the best pair requires assumption because token has hidden tiles. 
+		 * 
+		 * So we try to pick a range of mines and sums to search for best pair based on calculations
+		 * provided by Token.estemateMaxMine() and Token.estemateMaxSum() 
+		 * 
+		 */
 		for(int mine = token.mine; mine < token.estemateMaxMine(); mine++)
 		{
+			//ignore after maxMine
 			if (mine > 8)
 				continue;
 			
 			for(int sum = token.averageSum(); sum < token.estemateMaxSum(); sum++)
 			{
+				//ignore after maxSum 
 				if (sum > 40)
 					continue;
 				
-				Pattern pointer = list.getPat(mine, sum); //  
+				//Magic happens 
+				Pattern pointer = list.getPat(mine, sum); 
 				
 				if(pointer==null)
 					continue; 
 				
-			
+				//compares the while list of patterns at pointer with the current pait to find the best 
 				while(pointer.next != null)
 				{
 					pointer = pointer.next; 
@@ -79,7 +102,6 @@ public class BasicPicker
 						if(pointer.strength() > token.pair.strength())
 						{	
 							token.pair = pointer; 
-							//hightestScore = pointer.matchToken(token); 
 						}
 					}
 					
@@ -88,26 +110,27 @@ public class BasicPicker
 		}//end mine
 		
 		
-		
+	//add new token to list 
 		if(root == null)
 			root = token;
-		else
+		else //append() adds or updates token 
 			root.append(token); 
 		
-		//if(token.pair == null)
-		//	System.out.println("bich token.pair is a missing");
-		//else
-		//	System.out.println("token.pair is a found: \n" + token.pair + "\n\n" + token);
-	
 	}//end add
 	
+	
+	/**
+	 * removed clicked token from the list 
+	 * @param x coordinate 
+	 * @param y coordinate
+	 */
 	public void clicked(int x, int y)
 	{
+		//linked list stuff 
+		
 		if(root == null)
 			return;
-		
-		
-		
+
 		if(root.isClicked(x, y))
 		{
 			//System.out.println("removed root at "+x +","+y);
@@ -121,16 +144,17 @@ public class BasicPicker
 		{
 			if(p.next.isClicked(x, y))
 			{
-				//System.out.println("removed token at "+x +","+y);
 				p.next = p.next.next; 
 				return; 
 			}
 		p = p.next; 
-		}
-			//System.out.println("no token was removed");
+		}//end while 
 	}
 	
-	
+	/**
+	 * return token with most exposed non-zero number tiles and strongest pair 
+	 * @return
+	 */
 	public Token pickToken()
 	{
 		if(root == null)
@@ -146,31 +170,18 @@ public class BasicPicker
 		
 		while(pointer != null)
 		{
-			//System.out.println("picker:\n" + pointer);
-			
+			//hidden tiles is unreliable because of borders,  
 			if( picked.countNumbers() < pointer.countNumbers())
-				{
-
-				picked = pointer; 
-				///System.out.println(picked);
-				//if(picked.pair==null)
-				//	System.out.println("fking picked.pair is null");
-				//if(pointer.pair==null)
-				//	System.out.println("fking pointer.pair is null");
-				
-				//if(picked.pair.strength() < pointer.pair.strength())
-					//picked = pointer; 
+			{
+				picked = pointer; 	
 			}
 			else if (picked.countNumbers() == pointer.countNumbers())
 			{
 				if(picked.pair.strength() < pointer.pair.strength())
 					picked = pointer; 
 			}
-			
 			pointer = pointer.next; 
 		}
-		
-		//System.out.println("picked:" + (picked.hidden+picked.border));
 		
 		return picked; 
 	}

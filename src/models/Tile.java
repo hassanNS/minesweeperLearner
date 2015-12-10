@@ -1,5 +1,10 @@
 package models;
 
+/**
+ * Holds Tile characher values 
+ * @author KLD
+ *
+ */
 public class Tile 
 {
 	public static final char MINE= '*'; 

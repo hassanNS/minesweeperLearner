@@ -11,17 +11,37 @@ import models.Token;
  */
 public class MineSweeper 
 {
+	/**
+	 * map grid 
+	 */
 	public MapGrid map; 
 	
+	/**
+	 * Tile Status  
+	 */
 	final int EXPOSED = -1; 
+	/**
+	 * Tile Status  
+	 */
 	final int HIDDEN = 0; 
+	/**
+	 * Tile Status  
+	 */
 	final int FLAGGED = 1; 
 	
+	/**
+	 * used to determine winning condition TODO very poor 
+	 */
 	public int minesLeft; 
-	public boolean isFirstClick;
 	 
+	/**
+	 * Tile Status  
+	 */
 	int[][] tileStatus; 
 	
+	/**
+	 * Stores tokens and picks best token 
+	 */
 	public BasicPicker picker; 
 	
 	
@@ -30,8 +50,6 @@ public class MineSweeper
 		map = m; 
 		
 		minesLeft = m.mine; 
-		
-		isFirstClick = true;
 		
 		tileStatus = new int[map.height][map.width];
 		
@@ -59,6 +77,7 @@ public class MineSweeper
 	 */
 	public boolean click(int x, int y)
 	{
+		//test out of bounds 
 		if(x < 0 || x >= map.width || y < 0 || y >= map.height)
 			return true; 
 		
@@ -132,7 +151,12 @@ public class MineSweeper
 		click(x,y);
 	}
 	
-	
+	/**
+	 * Flag tile located at x,y only if tile is hidden. New tokens are added after flag. 
+	 * The flagged tile will be removed from BasicPicker. 
+	 * @param x coordinate 
+	 * @param y coordinate
+	 */
 	public void flag(int x, int y)
 	{
 		if(tileStatus[y][x] != HIDDEN)
@@ -142,7 +166,7 @@ public class MineSweeper
 		
 		tileStatus[y][x] = FLAGGED; 
 			
-		//offsets
+		//offsets for  3x3  TODO get these from picker 
 		int[] xo = {0,1,2,2,2,1,0,0}; 
 		int[] yo = {0,0,0,1,2,2,2,1};
 		
@@ -151,6 +175,7 @@ public class MineSweeper
 			int lx =  x-1 + xo[i]; //local x 
 			int ly =  y-1 + yo[i]; //local y
 			
+			//ignore out of bound coordinates 
 			if(lx < 0 || lx >= map.width || ly < 0 ||  ly >= map.height)
 				continue;
 			
@@ -165,11 +190,18 @@ public class MineSweeper
 			}
 		}//end for	
 		
+		//removed clicked token  
 		picker.clicked(x,y); 
+		
 	}
 	
 	
-	
+	/**
+	 * Builds up a 3x3 token generated from game map 
+	 * @param x coordinate
+	 * @param y coordinate
+	 * @return 3x3 Token 
+	 */
 	public Token tokenize(int x, int y)
 	{
 		String build = "";
@@ -204,7 +236,7 @@ public class MineSweeper
 	
 	
 	/**
-	 * returns string representation of minesweepers grid revealing revealed parts in mapgrid while hiding unreleavled. 
+	 * Returns string representation of minesweepers grid revealing revealed parts in mapgrid while hiding unreleavled. 
 	 */
 	public String toString()
 	{

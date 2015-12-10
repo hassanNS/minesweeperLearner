@@ -4,8 +4,10 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
-
+/**
+ * 
+ * @author Nazmul
+ */
 public class Saver_Loader {
 
 	public static void saveHashTable(PatternHash hashTable, String fileName)
@@ -18,7 +20,6 @@ public class Saver_Loader {
 		 	out.writeObject(hashTable);
 		 	out.close();
 		 	fileOut.close();
-		 	System.out.printf("Serialized data is saved in hashTable.ser");
 		} catch(Exception e){}
 	}
 	

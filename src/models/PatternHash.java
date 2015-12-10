@@ -1,50 +1,65 @@
 package models;
 
-import java.io.PrintWriter;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  *
- * @author Naz
+ * @author KLD
  *
- * Class acting as double hashtable to store minesweeper
- * 3 x 3 patterns
+ * Holds a list of patterns stored based on Pattern.mine and Pattern.sum 
  *
  */
-
-public class PatternHash implements Serializable{
+public class PatternHash implements Serializable
+{
 	/**
-	 *
+	 * remove annoying warning
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	/**
-	 * A hashtable of length 9. Each index being the number of mines.
-	 * Thus, 0-8 mines.
-	 * Each index in the table contains another hashtable of Patterns.
-	 * Each KEY => maximum sum of number for the number of mines
-	 * Each VALUE => List of corresponding pattern objects
+	 * max number of mines 
 	 */
 	public static final int MAX_MINE = 8;
+	
+	/**
+	 * max sum 
+	 */
 	private int maxSum = 40;
+	
+	/**
+	 * double hash tables (first hash is mine, second is sum) 
+	 */
 	public Pattern [][] table;
+	
+	/**
+	 * replaced by length TODO delete -KLD
+	 */
 	public static int count; 
-	//int[] boundaries = {40, 40, 40, 36, 32, 24, 16, 8};
+
+	/**
+	 * length of patterns 
+	 */
 	public int length; 
 	
 	
-	// Initializes the Hashtable
+	/**
+	 * Initializes the PatternHash by initializing table of patterns and setting length 
+	 */
 	public PatternHash()
 	{
 		length = 0; 
-		count = 0; 
+		//count = 0;  no longer used 
 		table = new Pattern[MAX_MINE+1][maxSum+1]; //includes 0
 	}
 
+	/**
+	 *  
+	 * @param mine number of mine 
+	 * @param sum sum 
+	 * @return pattern linked list at given mine and sum 
+	 */
 	public Pattern getPat(int mine, int sum)
 	{
-		//System.out.println("mine:" + mine+" sum"+sum);
 		if(sum > maxSum)
 			sum = maxSum; 
 		
@@ -55,8 +70,8 @@ public class PatternHash implements Serializable{
 	}
 
 	/**
-	 *
-	 * @param p
+	 * Appends unique patterns. If pattern is not unique, the score of the existing one will increment based on added score
+	 * @param p pattern to add 
 	 */
 	public void addPattern(Pattern p)
 	{
@@ -68,68 +83,35 @@ public class PatternHash implements Serializable{
 		}
 		else
 		{
-			if(root.append(p))
+			if(root.append(p)) //appends recursively adds new patterns (or increment parallel pattern score) 
 				length++; 
 		}
 
 	}
 
 	/**
-	 * Print a pattern linked list
-	 * @param mineNum
-	 * @param tileSum
+	 * 
+	 * Return string representation of the table with the following format:
+	 * 
+	 * <pre>
+	 * [Format Start]
+	 * Mine m
+	 * 	Sum: s
+	 * 		[lists all patterns in the category horizontal] 
+	 * 	Sum: s+1
+	 * 		[lists all patterns in the category horizontal] 
+	 *	...
+	 * Mine m+1 
+	 * 	Sum: s
+	 * 		[lists all patterns in the category horizontal] 
+	 * 		...
+	 * ...
+	 * [Format End]
+	 * </pre>
+	 * 
+	 *	<b>Note:</b> ...means continues
+	 *			 <p>[lists all patterns in the category horizontal]: actual patterns are listed based on their toString </p>
 	 */
-	public void printPatternLinkedList(int mineNum, int tileSum)
-	{
-		table[mineNum][tileSum].printLinkedList();
-	}
-
-	/**
-	 * Return a pattern linked list from the hashtable
-	 * @param mineNum
-	 * @param tileSum
-	 * @return
-	 */
-	public Pattern getPatternLinkedList(int mineNum, int tileSum)
-	{
-		return table[mineNum][tileSum];
-	}
-
-	/**
-	 * Write every pattern inside the hashtable to a csv file TODO delete or move! -KLD
-	 */
-	public void writeToFile()
-	{
-		try{
-			PrintWriter writer = new PrintWriter("patternData.csv", "UTF-8");
-			for(int i=0; i<MAX_MINE+1; i++)
-			{
-				for(int j=0; j<maxSum+1; j++)
-				{
-					if(getPatternLinkedList(i, j) == null)
-						continue;
-
-					Pattern temp = getPatternLinkedList(i, j);
-					do{
-						writer.printf("%s,%d,%d\n",
-								temp.getPatternString(), temp.mines,
-								temp.sum);
-						temp = temp.next;
-					}
-					while(temp != null);
-				}
-			}
-			writer.close();
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-			System.out.println();
-		}
-	}
-
-
-	@Override
 	public String toString()
 	{
 		String build = ""; 

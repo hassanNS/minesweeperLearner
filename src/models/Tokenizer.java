@@ -1,34 +1,33 @@
 package models;
 
-import java.util.ArrayList;
-
 import grid.MapGrid;
 
 /**
- * Yokenizer  create patterns from a given grid
+ * Tokenizer create patterns from a given grid
  *
  * Comment
  * This class also needs refine and optimization -KLD
  *
  */
-public class Tokenizer {
+public class Tokenizer 
+{
 
-	 
-	
 	/**
 	 * Takes a center point and returns a
-	 * 3 x 3 snapshot of the board as a pattern
+	 * 3x3 snapshot of the board as a pattern not including central point at x,y 
 	 * @param x the width x coordinate
 	 * @param y the height y coordinate
-	 * @return a patterns of x,y in grid
+	 * @return null of pattern contains empty tile, otherwise a patterns of x,y in grid
+	 * 
+	 * TODO rename to 3x3 tokenizer 
 	 */
 	public Pattern tokenizePattern(int x, int y, MapGrid grid)
 	{
-		//TODO pass grid
 		String pat="";
 
 		MapGrid mg = grid; 
 		
+		//TODO need loop and math -KLD 
 		pat += mg.tileString(x-1,y-1);
 		pat += mg .tileString(x-1,y);
 		pat += mg.tileString(x-1,y+1);
@@ -40,36 +39,9 @@ public class Tokenizer {
 
 		int type = (mg.tileString(x, y).charAt(0)=='*')? Pattern.TYPE_MINE : Pattern.TYPE_NON_MINE ;
 
-		if (pat.contains("0"))	//.......
+		if (pat.contains("0"))	//patterns shouldn't have 0. Because 0 means center is always not a mine. 
 			return null;
 		
 		return new Pattern(pat, type);
 	}
-
-	
-	
-	/*TODO delete: not used.
-	 *
-	 * @return An array of patterns representing 3x3 snapshots of
-	 * every token in the grid.
-	 *
-	public ArrayList<Pattern> tokenize3x3()
-	{
-		ArrayList<Pattern> patArray = new ArrayList<Pattern>();
-
-		for(int i=0; i<mg.width; i++)
-		{
-			for(int j=0; j<mg.height; j++)
-			{
-				Pattern t = tokenizeTile3x3(i, j);
-				if (t == null)
-					continue;
-
-				patArray.add(t);
-			}
-		}
-
-		return patArray;
-	}*/
-
 }

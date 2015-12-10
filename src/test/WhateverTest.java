@@ -1,5 +1,7 @@
 package test;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class WhateverTest {
@@ -19,7 +21,7 @@ public class WhateverTest {
 			9-	34
 			10-	44
 			
-			1,000,000 games
+			1,000,000 games  1378 Lost:998622
 			1-	123
 			2-	128
 			3-	144
@@ -34,13 +36,20 @@ public class WhateverTest {
 		 * 
 		 */
 		
-		int maxScore = 250000;  //number of games
-		int[] score = new int[10]; 
+		int maxScore = 1000000;  //number of games
+		int[] score = new int[50]; 
 		
 		for(int i=0; i<score.length; i++)
 			score[i] = 0; 
 		
-		Scanner input = new Scanner(System.in); 
+		Scanner input;
+		try {
+			input = new Scanner(new File("gameWon"));
+		} catch (FileNotFoundException e1) {
+			
+			e1.printStackTrace();
+			return; 
+		} 
 		
 		String build = ""; 
 		

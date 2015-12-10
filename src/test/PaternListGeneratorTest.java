@@ -10,33 +10,34 @@ import models.Saver_Loader;
 
 public class PaternListGeneratorTest 
 {
+	/**
+	 * Here we generate pattern tables
+	 */
 	public static void main(String[] args) throws FileNotFoundException 
 	{
-		//PatternHash list = PatternListGenerator.generateCount(8, 8, 10, 32768); 
 		
-		//System.out.println(list);
-		//System.out.println(list.count);
+		int width = 8; 
+		int height = 8; 
+		int mine = 8; 
+		
+		int param = 1000000;
+		
+		//PatternHash list = PatternListGenerator.untilEnough(width, height, mine , param);
 		
 		
-		int w = 5; 
-		int h = 5; 
-		int m = 4; 
+		PatternHash list = Saver_Loader.loadHashTable("1mThreshv2.ser"); 
 		
-		int param = 500000;
-		
-		PatternHash list = PatternListGenerator.untilEnough(w, h, m, param);
-		
-		PrintStream out = new PrintStream(new File("8_8_8_500000"));
+		PrintStream out = new PrintStream(new File("8_8_8_u1000000.txt"));
 		out.println(list);
 		out.close(); 
 		
-		//Saver_Loader.saveHashTable(list, "1mThresh.ser");
-
 		System.out.println("Unique length patterns: " + list.length);
 		
+		//Saver_Loader.saveHashTable(list, "1mThreshv2.ser");
+
 		
 		
-		/*
+		/* some previous findings
 		 *  optimal
 		 * 295000	count: 48300	diff: 43
 			Unique patterns: 48302
